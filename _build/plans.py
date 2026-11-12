@@ -1,5 +1,6 @@
-# Дані планів тренувань на 12 місяців: 4 фази по 3 місяці.
-# Вправа: (назва, підходи×повторення). Місяць: (заголовок, що робимо, прогресія).
+# 12-month training plan data: 4 phases of 3 months each.
+# Exercise: (name, sets × reps). Month: (title, what to do, progression).
+# Texts are in Ukrainian because the site is in Ukrainian.
 
 MEN = {
     'title': 'План тренувань для чоловіків на 12 місяців',
@@ -161,7 +162,7 @@ RULES = [
     ('Самопочуття', 'Біль у суглобах, запаморочення, хвороба — привід пропустити тренування. Повертайся з легшою вагою.'),
 ]
 
-# Картинки вправ: id у free-exercise-db (github.com/yuhonas/free-exercise-db, Unlicense — суспільне надбання).
+# Exercise images: ids in free-exercise-db (github.com/yuhonas/free-exercise-db, Unlicense — public domain).
 EX_IMG = {
     'Армійський жим гантелей': 'Dumbbell_Shoulder_Press',
     'Армійський жим стоячи': 'Standing_Military_Press',

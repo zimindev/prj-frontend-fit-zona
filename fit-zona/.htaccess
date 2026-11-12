@@ -3,7 +3,7 @@ DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
 RewriteEngine On
-# одна адреса головної: /index.html → /
+# single home URL: /index.html → /
 RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
 

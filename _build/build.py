@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Генератор сайту Fit Zona (новий дизайн, Montserrat).
+"""Fit Zona site generator (Montserrat design).
 
-Сторінки: головна, річний план для чоловіків, річний план для жінок, калькулятор калорій.
-CSS і JS лежать у ../fit-zona/assets і пишуться руками; цей скрипт збирає HTML,
-перетискає фото в WebP і кадри вправ.
+Pages: home, 12-month plan for men, 12-month plan for women, calorie calculator, 404.
+CSS and JS live in ../fit-zona/assets and are written by hand; this script builds the HTML,
+converts photos and exercise frames to WebP and writes the SEO files.
 
-Запуск: python3 build.py
+Usage: python3 build.py
 """
 import html
 import json
@@ -17,12 +17,12 @@ SITE_DIR = os.path.join(os.path.dirname(HERE), 'fit-zona')
 sys.path.insert(0, HERE)
 from plans import MEN, WOMEN, RULES, EX_IMG  # noqa: E402
 
-PHOTOS = os.path.join(HERE, 'photos')   # фото Pexels
-EX_SRC = os.path.join(HERE, 'ex-img')   # кадри free-exercise-db (Unlicense)
-VERSION = '1.1.0'
+PHOTOS = os.path.join(HERE, 'photos')   # Pexels photos
+EX_SRC = os.path.join(HERE, 'ex-img')   # free-exercise-db frames (Unlicense)
+VERSION = '1.1.1'
 SITE = 'https://fit-zona.pp.ua'
 LASTMOD = '2026-11-12'
-OG = {}  # сторінка → (фото, заголовок на картинці)
+OG = {}  # page → (photo, headline drawn on the social image)
 
 e = html.escape
 USED_PHOTOS = set()
@@ -44,10 +44,10 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
            "%3Cpath d='M9 22V10h10M9 16h7M17 22l6-12' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
 
 
-# ---------- зображення ----------
+# ---------- images ----------
 
 def photo(name, alt, cls='', sizes='(max-width: 800px) 100vw, 50vw', eager=False):
-    """<img> з двома WebP-розмірами (640 і 1400)."""
+    """<img> with two WebP sizes (640 and 1400)."""
     USED_PHOTOS.add(name)
     load = 'fetchpriority="high"' if eager else 'loading="lazy"'
     w, h = photo_size(name, 1400)
@@ -91,7 +91,7 @@ def export_images():
             im.save(os.path.join(ex_dir, f'{ex_id}-{frame}.webp'), 'WEBP', quality=62, method=6)
 
 
-# ---------- каркас ----------
+# ---------- page shell ----------
 
 def page_url(fname):
     return SITE + '/' + ('' if fname == 'index.html' else fname)
@@ -175,7 +175,7 @@ def arrow():
     return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
 
-# ---------- головна ----------
+# ---------- home ----------
 
 def page_home():
     total_ex = len({n for P in (MEN, WOMEN) for ph in P['phases'] for _, d in ph['days'] for n, _ in d if n in EX_IMG})
@@ -290,7 +290,7 @@ def page_home():
                  body, ld=ld)
 
 
-# ---------- плани ----------
+# ---------- plans ----------
 
 def ex_row(name, sets):
     ex_id = EX_IMG.get(name)
@@ -307,7 +307,7 @@ def plan_page(fname, plan, key, other, extra_rules):
     phases = plan['phases']
     rules = RULES + extra_rules
 
-    # картки етапів
+    # phase cards
     phase_cards = ''
     for i, ph in enumerate(phases):
         first = i * 3 + 1
@@ -316,7 +316,7 @@ def plan_page(fname, plan, key, other, extra_rules):
   <div class="phase-body"><span class="phase-when">Етап {i + 1} · місяці {ph['months']}</span><h3>{e(ph['name'])}</h3><p>{e(ph['freq'])}</p></div>
 </a>'''
 
-    # вкладки місяців
+    # month tabs
     tabs = ''
     for i, ph in enumerate(phases):
         btns = ''.join(
@@ -324,7 +324,7 @@ def plan_page(fname, plan, key, other, extra_rules):
             for m in range(i * 3 + 1, i * 3 + 4))
         tabs += f'<div class="mt-group"><span class="mt-label">{e(ph["name"])}</span><div class="mt-btns">{btns}</div></div>'
 
-    # панелі місяців
+    # month panels
     panels = ''
     for i, ph in enumerate(phases):
         days = ''
@@ -430,7 +430,7 @@ def plan_page(fname, plan, key, other, extra_rules):
     return shell(fname, plan['title'] + ' — Fit Zona', plan['desc'], body, ('plan.js',), f' data-plan="{key}"', ld=ld)
 
 
-# ---------- калькулятор ----------
+# ---------- calculator ----------
 
 def page_404():
     body = f'''
@@ -447,7 +447,7 @@ def page_404():
 </section>
 '''
     html_ = shell('404.html', 'Сторінку не знайдено — Fit Zona', 'Сторінку не знайдено.', body, robots='noindex, follow')
-    # 404 віддається з будь-якої адреси — шляхи до файлів робимо абсолютними
+    # 404 is served from any URL, so asset and page links must be absolute
     return html_.replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/').replace('href="index.html"', 'href="/"') \
         .replace('href="plan-', 'href="/plan-').replace('href="kalkulyator', 'href="/kalkulyator')
 
@@ -456,7 +456,7 @@ def export_seo():
     from PIL import Image, ImageDraw, ImageFont, ImageOps
     og_dir = os.path.join(SITE_DIR, 'assets', 'og')
     os.makedirs(og_dir, exist_ok=True)
-    font = os.path.join(HERE, 'fonts', 'Montserrat-VF.ttf')  # повний шрифт (латиниця, цифри, кирилиця)
+    font = os.path.join(HERE, 'fonts', 'Montserrat-VF.ttf')  # full font (Latin, digits, Cyrillic)
     for fname, (name, text) in OG.items():
         im = ImageOps.fit(Image.open(os.path.join(PHOTOS, name + '.jpg')).convert('RGB'), (1200, 630), Image.LANCZOS, centering=(0.5, 0.3))
         shade = Image.new('L', (1200, 630))

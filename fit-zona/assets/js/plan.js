@@ -1,4 +1,4 @@
-/* Fit Zona — річний план: місяці, прогрес, техніка вправ, друк. */
+/* Fit Zona — yearly plan: month tabs, progress, exercise technique dialog, print. */
 (function () {
   var KEY = 'fz2-plan-' + (document.body.getAttribute('data-plan') || 'x');
   var tabs = [].slice.call(document.querySelectorAll('[role="tab"][data-m]'));
@@ -10,7 +10,7 @@
     catch (e) { return []; }
   }
   function save(list) {
-    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { /* приватний режим */ }
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { /* private mode */ }
   }
   var done = load();
 
@@ -62,7 +62,7 @@
     });
   });
 
-  // «Місяць N →», картки етапів
+  // "Month N →" buttons and phase cards
   document.addEventListener('click', function (e) {
     var g = e.target.closest('[data-goto]');
     if (!g) return;
@@ -90,11 +90,11 @@
   if (!fromHash()) show(1);
   renderDone();
 
-  // друк поточного місяця
+  // print the current month
   var printBtn = document.querySelector('[data-print]');
   if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
 
-  // техніка вправи
+  // exercise technique dialog
   var dlg = document.querySelector('.ex-dlg');
   if (dlg && typeof dlg.showModal === 'function') {
     var imgs = dlg.querySelectorAll('.ex-frames img');

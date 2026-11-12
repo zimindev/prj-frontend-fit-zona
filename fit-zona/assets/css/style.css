@@ -1,4 +1,4 @@
-/* Fit Zona — річні плани тренувань і калькулятор калорій. v1.0.0 */
+/* Fit Zona — yearly training plans and calorie calculator. v1.1.1 */
 
 @font-face{font-family:"Montserrat";font-style:normal;font-weight:100 900;font-display:swap;
   src:url(../fonts/montserrat-cyrillic.woff2) format("woff2");
@@ -48,7 +48,7 @@ button{font:inherit;color:inherit}
 .lead{font-size:clamp(1.02rem,1.5vw,1.18rem);color:var(--muted);max-width:56ch;margin-top:20px}
 .ico{width:1.15em;height:1.15em;flex:none}
 
-/* ---------- кнопки ---------- */
+/* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-height:52px;padding:0 24px;border-radius:999px;border:2px solid transparent;
   font-weight:700;font-size:.98rem;text-decoration:none;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
 .btn:hover{transform:translateY(-1px)}
@@ -62,7 +62,7 @@ button{font:inherit;color:inherit}
 .text-link{display:inline-flex;align-items:center;gap:.5em;margin-top:22px;font-weight:700;text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px}
 .text-link:hover{color:var(--accent)}
 
-/* ---------- шапка ---------- */
+/* ---------- header ---------- */
 .site-header{position:sticky;top:0;z-index:50;background:rgba(245,244,240,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
 .site-header.scrolled{border-bottom-color:var(--line)}
 .header-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:72px}
@@ -89,7 +89,7 @@ button{font:inherit;color:inherit}
   .site-nav a{padding:14px 16px;font-size:1.05rem}
 }
 
-/* ---------- секції ---------- */
+/* ---------- sections ---------- */
 .section{padding:clamp(64px,9vw,112px) 0}
 .section-tight{padding:clamp(40px,6vw,72px) 0}
 .section-soft{background:var(--soft)}
@@ -98,7 +98,7 @@ button{font:inherit;color:inherit}
 .section-head{max-width:720px;margin-bottom:clamp(32px,4vw,52px)}
 .section-lead{color:var(--muted);margin-top:16px;font-size:1.05rem;max-width:60ch}
 
-/* ---------- головна: hero ---------- */
+/* ---------- home: hero ---------- */
 .hero{padding:clamp(40px,6vw,80px) 0 clamp(56px,7vw,96px)}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center}
 .hero-media{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -117,7 +117,7 @@ button{font:inherit;color:inherit}
 .stats-grid b{display:block;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;line-height:1;letter-spacing:-.03em}
 .stats-grid span{display:block;margin-top:8px;color:var(--muted);font-size:.92rem}
 
-/* картки інструментів */
+/* tool cards */
 .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .tool-card{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--radius);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);transition:transform .25s}
 .tool-card:hover{transform:translateY(-4px)}
@@ -127,7 +127,7 @@ button{font:inherit;color:inherit}
 .tag{align-self:flex-start;background:var(--accent-soft);color:var(--accent-dark);font-size:.78rem;font-weight:700;padding:5px 12px;border-radius:999px}
 .more{margin-top:auto;padding-top:10px;display:inline-flex;align-items:center;gap:.5em;font-weight:700;color:var(--accent)}
 
-/* кроки року */
+/* year steps */
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .step{background:var(--ink-2);border-radius:var(--radius);padding:28px 24px;position:relative;overflow:hidden}
 .step::after{content:"";position:absolute;left:24px;right:24px;top:0;height:4px;background:var(--accent);border-radius:0 0 4px 4px;transform-origin:left;transform:scaleX(calc(var(--i,1)*.25))}
@@ -137,14 +137,14 @@ button{font:inherit;color:inherit}
 .step h3{font-size:1.35rem}
 .step p{margin-top:10px;color:#C9CCD2;font-size:.95rem}
 
-/* блок з фото */
+/* photo + text block */
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:center}
 .split-media img{border-radius:var(--radius);width:100%;aspect-ratio:9/7;object-fit:cover}
 .checks{list-style:none;margin:24px 0 32px;padding:0;display:grid;gap:12px}
 .checks li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
 .checks li::before{content:"";flex:none;width:22px;height:22px;margin-top:1px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
 
-/* правила */
+/* rules */
 .rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:r}
 .rules li{background:var(--surface);border-radius:var(--radius);padding:26px 24px;counter-increment:r;position:relative}
 .rules li::before{content:counter(r,decimal-leading-zero);display:block;font-weight:800;color:var(--accent);font-size:.95rem;margin-bottom:14px}
@@ -162,7 +162,7 @@ button{font:inherit;color:inherit}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details p{padding:0 0 22px;color:var(--muted)}
 
-/* ---------- план ---------- */
+/* ---------- plan ---------- */
 .plan-hero{padding:clamp(32px,5vw,64px) 0 clamp(40px,5vw,64px)}
 .plan-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center}
 .plan-hero-media{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;background:var(--soft)}
@@ -233,7 +233,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
 .month-nav{display:flex;gap:10px}
 .hint{margin-top:16px;color:var(--muted);font-size:.9rem;text-align:center}
 
-/* перехресні посилання */
+/* cross links */
 .cross{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .cross-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 16px;padding:26px 28px;border-radius:var(--radius);background:var(--ink);color:#fff;text-decoration:none;transition:transform .25s}
 .cross-card:hover{transform:translateY(-3px)}
@@ -243,7 +243,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
 .cross-accent{background:var(--accent)}
 .note{margin-top:28px;color:var(--muted);font-size:.85rem;max-width:80ch}
 
-/* діалог вправи */
+/* exercise dialog */
 .ex-dlg{border:0;padding:0;border-radius:var(--radius);width:min(820px,calc(100vw - 32px));max-height:calc(100dvh - 32px);background:var(--surface);color:var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
 .ex-dlg::backdrop{background:rgba(18,19,22,.6);backdrop-filter:blur(4px)}
 .ex-dlg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:22px 24px 0}
@@ -256,7 +256,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
 .ex-frames img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:var(--radius-sm);background:var(--soft)}
 .ex-frames figcaption{margin-top:8px;font-weight:700;font-size:.88rem;color:var(--muted)}
 
-/* ---------- калькулятор ---------- */
+/* ---------- calculator ---------- */
 .calc-hero{padding:clamp(40px,6vw,80px) 0 0}
 .calc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
 .calc-form{background:var(--surface);border-radius:var(--radius);padding:clamp(22px,3.5vw,36px);box-shadow:var(--shadow);display:grid;gap:22px}
@@ -320,7 +320,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
 .how article{background:var(--soft);border-radius:var(--radius);padding:26px}
 .how p{margin-top:10px;color:var(--muted);font-size:.95rem}
 
-/* ---------- футер ---------- */
+/* ---------- footer ---------- */
 .site-footer{background:var(--ink);color:#C9CCD2;padding:56px 0 28px}
 .footer-grid{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
 .footer-text{margin-top:14px;max-width:44ch;font-size:.92rem}
@@ -330,7 +330,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
 .footer-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1);font-size:.85rem;color:#8D929A}
 .footer-bottom a{color:#fff;font-weight:700}
 
-/* ---------- адаптив ---------- */
+/* ---------- responsive ---------- */
 @media (max-width:1080px){
   .phases{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(2,1fr)}
@@ -381,7 +381,7 @@ button.ex-thumb::after{content:"";position:absolute;right:4px;bottom:4px;width:1
   .bmi-legend span:nth-child(3){visibility:hidden}
 }
 
-/* ---------- друк ---------- */
+/* ---------- print ---------- */
 @media print{
   @page{margin:14mm}
   body{background:#fff;font-size:11pt}

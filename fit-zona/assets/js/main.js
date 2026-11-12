@@ -1,4 +1,4 @@
-/* Fit Zona — меню і шапка. */
+/* Fit Zona — mobile menu and sticky header. */
 (function () {
   var burger = document.querySelector('.burger');
   var nav = document.getElementById('site-nav');

@@ -1,4 +1,4 @@
-/* Fit Zona — калькулятор калорій. */
+/* Fit Zona — calorie calculator. */
 (function () {
   var form = document.querySelector('.calc-form');
   if (!form) return;
@@ -10,7 +10,7 @@
   var fmt = function (n) { return Math.round(n).toLocaleString('uk-UA'); };
   var dec = function (n, d) { return n.toLocaleString('uk-UA', { minimumFractionDigits: d, maximumFractionDigits: d }); };
 
-  // зміна калорій відносно витрати: [мʼякий, помірний, швидкий]
+  // calorie change relative to TDEE: [soft, moderate, fast]
   var GOALS = {
     cut: { label: 'Щоб схуднути', k: [-0.10, -0.18, -0.25], protein: 2.0 },
     keep: { label: 'Щоб тримати вагу', k: [0, 0, 0], protein: 1.6 },
@@ -45,7 +45,7 @@
   function store() {
     var s = { sex: radio('sex'), goal: radio('goal'), pace: radio('pace'), activity: val('activity').value };
     ['age', 'height', 'weight', 'fat'].forEach(function (k) { s[k] = val(k).value; });
-    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* приватний режим */ }
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* private mode */ }
   }
 
   function check(name, min, max, label, optional) {
@@ -88,7 +88,7 @@
     else if (goal === 'bulk') note = 'Очікуй +' + dec((target - tdee) * 7 / 7700 * 0.6 + 0.1, 1) + ' кг на тиждень, частина — вода і глікоген.';
     else note = 'Вага коливається ±1 кг — дивись на середнє за тиждень.';
 
-    // при зайвій вазі білок рахуємо від «нормальної» ваги (ІМТ 25)
+    // with obesity, protein is based on the weight at BMI 25
     var bmi = w / Math.pow(h / 100, 2);
     var refW = bmi > 30 ? 25 * Math.pow(h / 100, 2) : w;
     var p = g.protein * refW;
@@ -115,7 +115,7 @@
     R.water.textContent = dec(water, 1) + ' л';
     var cat = bmi < 18.5 ? 'недостатня вага' : bmi < 25 ? 'норма' : bmi < 30 ? 'надмірна вага' : 'ожиріння';
     R.bmi.textContent = dec(bmi, 1) + ' — ' + cat;
-    // шкала 0–40
+    // scale 0–40
     R['bmi-dot'].style.left = (Math.min(40, Math.max(0, bmi)) / 40 * 100) + '%';
 
     R.meals.innerHTML = '';
