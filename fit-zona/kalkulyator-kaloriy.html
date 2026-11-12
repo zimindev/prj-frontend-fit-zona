@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Калькулятор калорій, білків, жирів і вуглеводів — Fit Zona</title>
+<meta name="description" content="Порахуй денну норму калорій для схуднення, підтримки чи набору маси: білки, жири, вуглеводи, вода та індекс маси тіла.">
+<meta name="theme-color" content="#121316">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Калькулятор калорій, білків, жирів і вуглеводів — Fit Zona">
+<meta property="og:description" content="Порахуй денну норму калорій для схуднення, підтримки чи набору маси: білки, жири, вуглеводи, вода та індекс маси тіла.">
+<meta property="og:locale" content="uk_UA">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23FF4F1F'/%3E%3Cpath d='M9 22V10h10M9 16h7M17 22l6-12' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css?v=1.0.0">
+</head>
+<body>
+<a class="skip" href="#main">Перейти до змісту</a>
+<header class="site-header">
+  <div class="wrap header-in">
+    <a class="logo" href="index.html" aria-label="Fit Zona — на головну"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="M9 22V10h10M9 16h7M17 22l6-12" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>FIT<b>ZONA</b></span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню"><span></span><span></span><span></span></button>
+    <nav id="site-nav" class="site-nav" aria-label="Головне меню"><ul><li><a href="index.html">Головна</a></li><li><a href="plan-dlya-cholovikiv.html">Для чоловіків</a></li><li><a href="plan-dlya-zhinok.html">Для жінок</a></li><li><a href="kalkulyator-kaloriy.html" aria-current="page">Калькулятор калорій</a></li></ul></nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="calc-hero">
+  <div class="wrap">
+    <p class="eyebrow">Калькулятор калорій</p>
+    <h1>Скільки тобі <span class="accent">їсти</span>?</h1>
+    <p class="lead">Норма калорій, білків, жирів і вуглеводів під твою ціль. Рахується одразу, поки вводиш дані.</p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="wrap calc-grid">
+    <form class="calc-form" novalidate aria-label="Дані для розрахунку">
+      <fieldset class="seg-field">
+        <legend>Стать</legend>
+        <div class="seg">
+          <label><input type="radio" name="sex" value="m" checked><span>Чоловік</span></label>
+          <label><input type="radio" name="sex" value="f"><span>Жінка</span></label>
+        </div>
+      </fieldset>
+      <div class="fields-3">
+        <label class="field"><span>Вік</span><span class="input-unit"><input type="number" name="age" inputmode="numeric" min="16" max="90" value="30" required><i>років</i></span></label>
+        <label class="field"><span>Зріст</span><span class="input-unit"><input type="number" name="height" inputmode="numeric" min="130" max="230" value="178" required><i>см</i></span></label>
+        <label class="field"><span>Вага</span><span class="input-unit"><input type="number" name="weight" inputmode="decimal" min="35" max="250" step="0.1" value="80" required><i>кг</i></span></label>
+      </div>
+      <label class="field">
+        <span>Активність</span>
+        <select name="activity">
+          <option value="1.2">Мінімальна — сидяча робота</option>
+          <option value="1.375">Легка — 1–2 тренування на тиждень</option>
+          <option value="1.55" selected>Середня — 3–4 тренування на тиждень</option>
+          <option value="1.725">Висока — 5–6 тренувань на тиждень</option>
+          <option value="1.9">Дуже висока — фізична праця + спорт</option>
+        </select>
+      </label>
+      <fieldset class="seg-field">
+        <legend>Ціль</legend>
+        <div class="seg seg-3">
+          <label><input type="radio" name="goal" value="cut"><span>Схуднути</span></label>
+          <label><input type="radio" name="goal" value="keep" checked><span>Тримати вагу</span></label>
+          <label><input type="radio" name="goal" value="bulk"><span>Набрати масу</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="seg-field" data-pace>
+        <legend>Темп</legend>
+        <div class="seg seg-3">
+          <label><input type="radio" name="pace" value="soft"><span>Мʼякий</span></label>
+          <label><input type="radio" name="pace" value="mid" checked><span>Помірний</span></label>
+          <label><input type="radio" name="pace" value="fast"><span>Швидкий</span></label>
+        </div>
+      </fieldset>
+      <label class="field"><span>Відсоток жиру <small>(необовʼязково)</small></span><span class="input-unit"><input type="number" name="fat" inputmode="decimal" min="3" max="60" step="0.1" placeholder="напр. 18"><i>%</i></span></label>
+      <p class="form-error" role="alert" hidden></p>
+    </form>
+
+    <div class="calc-result" aria-live="polite">
+      <div class="res-main">
+        <span class="res-label" data-r="goal-label">Щоб тримати вагу</span>
+        <div class="res-kcal"><b data-r="kcal">—</b><span>ккал на день</span></div>
+        <p class="res-note" data-r="note"></p>
+      </div>
+      <div class="macros">
+        <div class="macro m-p"><span>Білки</span><b data-r="p">—</b><i data-r="p-kcal"></i><div class="mbar"><span data-r="p-bar"></span></div></div>
+        <div class="macro m-f"><span>Жири</span><b data-r="f">—</b><i data-r="f-kcal"></i><div class="mbar"><span data-r="f-bar"></span></div></div>
+        <div class="macro m-c"><span>Вуглеводи</span><b data-r="c">—</b><i data-r="c-kcal"></i><div class="mbar"><span data-r="c-bar"></span></div></div>
+      </div>
+      <dl class="res-list">
+        <div><dt>Базовий обмін <small data-r="formula">(Міффлін — Сан-Жеор)</small></dt><dd data-r="bmr">—</dd></div>
+        <div><dt>Витрата з активністю</dt><dd data-r="tdee">—</dd></div>
+        <div><dt>Вода</dt><dd data-r="water">—</dd></div>
+        <div><dt>Індекс маси тіла</dt><dd data-r="bmi">—</dd></div>
+      </dl>
+      <div class="bmi-scale" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span><i data-r="bmi-dot"></i></div>
+      <div class="bmi-legend" aria-hidden="true"><span>&lt;18,5</span><span>18,5–25</span><span>25–30</span><span>30+</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="wrap">
+    <div class="section-head"><p class="eyebrow">На день</p><h2>Розподіл на 4 прийоми їжі</h2></div>
+    <div class="meals" data-r="meals"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><p class="eyebrow">Як рахуємо</p><h2>Звідки ці цифри</h2></div>
+    <div class="how">
+      <article><h3>Базовий обмін</h3><p>Скільки енергії тіло витрачає в спокої. Формула Міффліна — Сан-Жеора: 10 × вага + 6,25 × зріст − 5 × вік, +5 для чоловіків або −161 для жінок. Якщо вказати відсоток жиру — формула Кетча — Макардла, вона точніша для тих, хто тренується.</p></article>
+      <article><h3>Активність і ціль</h3><p>Базовий обмін множимо на коефіцієнт активності. Для схуднення віднімаємо 10–25 %, для набору маси додаємо 5–15 % — залежно від темпу.</p></article>
+      <article><h3>Білки, жири, вуглеводи</h3><p>Білок — 1,6–2,2 г на кг ваги (на дефіциті більше, щоб зберегти мʼязи). Жири — 0,8–1 г на кг, але не менше 20 % калорій. Решта — вуглеводи.</p></article>
+      <article><h3>Як коригувати</h3><p>Зважуйся щоранку і дивись середнє за тиждень. Вага стоїть 2 тижні — зміни норму на 100–150 ккал. Худнеш швидше ніж на 1 % ваги на тиждень — додай калорій.</p></article>
+    </div>
+    <div class="cross">
+      <a class="cross-card cross-accent" href="plan-dlya-cholovikiv.html"><span>12 місяців</span><b>План для чоловіків</b><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="cross-card" href="plan-dlya-zhinok.html"><span>12 місяців</span><b>План для жінок</b><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <p class="note">Розрахунок — орієнтир для здорових дорослих, а не медична порада. Під час вагітності, годування груддю, при хворобах чи розладах харчової поведінки звернись до лікаря.</p>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="logo logo-light" href="index.html"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="M9 22V10h10M9 16h7M17 22l6-12" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>FIT<b>ZONA</b></span></a>
+      <p class="footer-text">Річні плани тренувань і калькулятор калорій. Безкоштовно, без реєстрації — прогрес зберігається у твоєму браузері.</p>
+    </div>
+    <nav aria-label="Посилання у футері"><ul class="footer-nav"><li><a href="index.html">Головна</a></li><li><a href="plan-dlya-cholovikiv.html">Для чоловіків</a></li><li><a href="plan-dlya-zhinok.html">Для жінок</a></li><li><a href="kalkulyator-kaloriy.html">Калькулятор калорій</a></li></ul></nav>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Fit Zona</span>
+    <span>Design &amp; Development by <a href="https://zimin.dev" target="_blank" rel="noopener">Sasha Zimin</a> ❤️</span>
+  </div>
+</footer>
+<script src="assets/js/main.js?v=1.0.0" defer></script><script src="assets/js/calc.js?v=1.0.0" defer></script>
+</body>
+</html>
