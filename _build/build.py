@@ -8,6 +8,7 @@ CSS і JS лежать у ../fit-zona/assets і пишуться руками; �
 Запуск: python3 build.py
 """
 import html
+import json
 import os
 import sys
 
@@ -18,7 +19,10 @@ from plans import MEN, WOMEN, RULES, EX_IMG  # noqa: E402
 
 PHOTOS = os.path.join(HERE, 'photos')   # фото Pexels
 EX_SRC = os.path.join(HERE, 'ex-img')   # кадри free-exercise-db (Unlicense)
-VERSION = '1.0.0'
+VERSION = '1.1.0'
+SITE = 'https://fit-zona.pp.ua'
+LASTMOD = '2026-11-12'
+OG = {}  # сторінка → (фото, заголовок на картинці)
 
 e = html.escape
 USED_PHOTOS = set()
@@ -89,11 +93,37 @@ def export_images():
 
 # ---------- каркас ----------
 
-def shell(fname, title, desc, body, scripts=(), body_attrs=''):
+def page_url(fname):
+    return SITE + '/' + ('' if fname == 'index.html' else fname)
+
+
+def crumbs(fname, name):
+    return {'@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': 1, 'name': 'Головна', 'item': SITE + '/'},
+        {'@type': 'ListItem', 'position': 2, 'name': name, 'item': page_url(fname)}]}
+
+
+def shell(fname, title, desc, body, scripts=(), body_attrs='', ld=None, robots='index, follow'):
     nav = ''.join(
         '<li><a href="%s"%s>%s</a></li>' % (href, ' aria-current="page"' if href == fname else '', label)
         for href, label in NAV)
     foot_nav = ''.join(f'<li><a href="{href}">{label}</a></li>' for href, label in NAV)
+    head_seo = ''
+    if robots.startswith('index'):
+        og_img = SITE + '/assets/og/' + fname.replace('.html', '.jpg')
+        head_seo = f'''<link rel="canonical" href="{page_url(fname)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fit Zona">
+<meta property="og:url" content="{page_url(fname)}">
+<meta property="og:title" content="{e(title)}">
+<meta property="og:description" content="{e(desc)}">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:image" content="{og_img}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">'''
+        if ld:
+            head_seo += '\n<script type="application/ld+json">' + json.dumps({'@context': 'https://schema.org', '@graph': ld}, ensure_ascii=False).replace('</', '<\\/') + '</script>'
     js = ''.join(f'<script src="assets/js/{s}?v={VERSION}" defer></script>' for s in ('main.js',) + tuple(scripts))
     return f'''<!doctype html>
 <html lang="uk">
@@ -103,11 +133,10 @@ def shell(fname, title, desc, body, scripts=(), body_attrs=''):
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="theme-color" content="#121316">
-<meta property="og:type" content="website">
-<meta property="og:title" content="{e(title)}">
-<meta property="og:description" content="{e(desc)}">
-<meta property="og:locale" content="uk_UA">
+<meta name="robots" content="{robots}">
+{head_seo}
 <link rel="icon" href="{FAVICON}">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/montserrat-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css?v={VERSION}">
 </head>
@@ -251,9 +280,14 @@ def page_home():
   </div>
 </section>
 '''
+    OG['index.html'] = ('cta', 'Рік тренувань.\nОдин чіткий план.')
+    ld = [
+        {'@type': 'WebSite', '@id': SITE + '/#site', 'url': SITE + '/', 'name': 'Fit Zona', 'inLanguage': 'uk'},
+        {'@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]},
+    ]
     return shell('index.html', 'Fit Zona — річні плани тренувань і калькулятор калорій',
                  'Безкоштовні плани тренувань у залі на 12 місяців для чоловіків і жінок та калькулятор калорій, білків, жирів і вуглеводів.',
-                 body)
+                 body, ld=ld)
 
 
 # ---------- плани ----------
@@ -384,12 +418,82 @@ def plan_page(fname, plan, key, other, extra_rules):
   </div>
 </dialog>
 '''
-    return shell(fname, plan['title'] + ' — Fit Zona', plan['desc'], body, ('plan.js',), f' data-plan="{key}"')
+    OG[fname] = (hero_name, plan['h1'] + '\nна 12 місяців')
+    ld = [
+        {'@type': 'WebPage', 'url': page_url(fname), 'name': plan['title'], 'description': plan['desc'], 'inLanguage': 'uk',
+         'isPartOf': {'@id': SITE + '/#site'}, 'primaryImageOfPage': SITE + '/assets/img/' + hero_name + '.webp',
+         'about': {'@type': 'ExercisePlan', 'name': plan['title'], 'exerciseType': 'Силові тренування в залі',
+                   'activityDuration': 'P12M', 'workload': '3–5 тренувань на тиждень',
+                   'audience': {'@type': 'PeopleAudience', 'suggestedGender': 'male' if key == 'm' else 'female'}}},
+        crumbs(fname, plan['h1']),
+    ]
+    return shell(fname, plan['title'] + ' — Fit Zona', plan['desc'], body, ('plan.js',), f' data-plan="{key}"', ld=ld)
 
 
 # ---------- калькулятор ----------
 
+def page_404():
+    body = f'''
+<section class="calc-hero section">
+  <div class="wrap">
+    <p class="eyebrow">Помилка 404</p>
+    <h1>Такої сторінки <span class="accent">немає</span></h1>
+    <p class="lead">Можливо, вона переїхала. Почни з головної або одразу відкрий план чи калькулятор.</p>
+    <div class="btns">
+      <a class="btn btn-accent" href="/">На головну {arrow()}</a>
+      <a class="btn btn-ink" href="/kalkulyator-kaloriy.html">Калькулятор калорій {arrow()}</a>
+    </div>
+  </div>
+</section>
+'''
+    html_ = shell('404.html', 'Сторінку не знайдено — Fit Zona', 'Сторінку не знайдено.', body, robots='noindex, follow')
+    # 404 віддається з будь-якої адреси — шляхи до файлів робимо абсолютними
+    return html_.replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/').replace('href="index.html"', 'href="/"') \
+        .replace('href="plan-', 'href="/plan-').replace('href="kalkulyator', 'href="/kalkulyator')
+
+
+def export_seo():
+    from PIL import Image, ImageDraw, ImageFont, ImageOps
+    og_dir = os.path.join(SITE_DIR, 'assets', 'og')
+    os.makedirs(og_dir, exist_ok=True)
+    font = os.path.join(HERE, 'fonts', 'Montserrat-VF.ttf')  # повний шрифт (латиниця, цифри, кирилиця)
+    for fname, (name, text) in OG.items():
+        im = ImageOps.fit(Image.open(os.path.join(PHOTOS, name + '.jpg')).convert('RGB'), (1200, 630), Image.LANCZOS, centering=(0.5, 0.3))
+        shade = Image.new('L', (1200, 630))
+        sd = ImageDraw.Draw(shade)
+        for x in range(1200):
+            sd.line((x, 0, x, 630), fill=int(max(110, 240 - x * 0.2)))
+        im = Image.composite(Image.new('RGB', im.size, (18, 19, 22)), im, shade)
+        d = ImageDraw.Draw(im)
+        f_big = ImageFont.truetype(font, 68); f_big.set_variation_by_axes([800])
+        f_small = ImageFont.truetype(font, 30); f_small.set_variation_by_axes([800])
+        d.rounded_rectangle((64, 64, 112, 112), 13, fill=(255, 79, 31))
+        d.line((78, 99, 78, 77, 96, 77), fill='white', width=6, joint='curve')
+        d.line((78, 88, 91, 88), fill='white', width=6)
+        d.line((93, 99, 104, 77), fill='white', width=6)
+        d.text((128, 72), 'FIT', font=f_small, fill='white')
+        d.text((128 + d.textlength('FIT', font=f_small), 72), 'ZONA', font=f_small, fill=(255, 79, 31))
+        d.multiline_text((64, 290), text, font=f_big, fill='white', spacing=12)
+        d.rectangle((64, 556, 184, 564), fill=(255, 79, 31))
+        im.save(os.path.join(og_dir, fname.replace('.html', '.jpg')), 'JPEG', quality=82, optimize=True, progressive=True)
+    # apple-touch-icon
+    ic = Image.new('RGB', (180, 180), (255, 79, 31))
+    d = ImageDraw.Draw(ic)
+    w = 15
+    d.line((51, 124, 51, 56, 107, 56), fill='white', width=w, joint='curve')
+    d.line((51, 90, 90, 90), fill='white', width=w)
+    d.line((96, 124, 129, 56), fill='white', width=w)
+    ic.save(os.path.join(SITE_DIR, 'assets', 'img', 'apple-touch-icon.png'))
+    urls = ['index.html', 'plan-dlya-cholovikiv.html', 'plan-dlya-zhinok.html', 'kalkulyator-kaloriy.html']
+    sm = ''.join(f'  <url><loc>{page_url(u)}</loc><lastmod>{LASTMOD}</lastmod></url>\n' for u in urls)
+    with open(os.path.join(SITE_DIR, 'sitemap.xml'), 'w', encoding='utf-8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + sm + '</urlset>\n')
+    with open(os.path.join(SITE_DIR, 'robots.txt'), 'w', encoding='utf-8') as f:
+        f.write(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
+
+
 def page_calc():
+    OG['kalkulyator-kaloriy.html'] = ('gym-dumbbells', 'Калькулятор\nкалорій і БЖВ')
     body = f'''
 <section class="calc-hero">
   <div class="wrap">
@@ -493,7 +597,11 @@ def page_calc():
 '''
     return shell('kalkulyator-kaloriy.html', 'Калькулятор калорій, білків, жирів і вуглеводів — Fit Zona',
                  'Порахуй денну норму калорій для схуднення, підтримки чи набору маси: білки, жири, вуглеводи, вода та індекс маси тіла.',
-                 body, ('calc.js',))
+                 body, ('calc.js',), ld=[
+                     {'@type': 'WebApplication', 'name': 'Калькулятор калорій Fit Zona', 'url': page_url('kalkulyator-kaloriy.html'),
+                      'applicationCategory': 'HealthApplication', 'operatingSystem': 'Будь-яка (браузер)', 'inLanguage': 'uk',
+                      'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'UAH'}},
+                     crumbs('kalkulyator-kaloriy.html', 'Калькулятор калорій')])
 
 
 def main():
@@ -502,11 +610,14 @@ def main():
         'plan-dlya-cholovikiv.html': plan_page('plan-dlya-cholovikiv.html', MEN, 'm', ('plan-dlya-zhinok.html', 'План для жінок'), []),
         'plan-dlya-zhinok.html': plan_page('plan-dlya-zhinok.html', WOMEN, 'f', ('plan-dlya-cholovikiv.html', 'План для чоловіків'), WOMEN_EXTRA),
         'kalkulyator-kaloriy.html': page_calc(),
+        '404.html': page_404(),
     }
     for name, content in pages.items():
+        content = content.replace('href="index.html"', 'href="./"').replace('href="./"', 'href="/"' if name == '404.html' else 'href="./"')
         with open(os.path.join(SITE_DIR, name), 'w', encoding='utf-8') as f:
             f.write(content)
     export_images()
+    export_seo()
     print('pages:', ', '.join(pages), '| photos:', len(USED_PHOTOS), '| exercises:', len(USED_EX))
 
 

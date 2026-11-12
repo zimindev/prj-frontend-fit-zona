@@ -14,6 +14,8 @@ python3 _build/build.py
 
 Генерує HTML у `fit-zona/` з даних `_build/plans.py`, перетискає фото (`_build/photos`, Pexels) і кадри вправ (`_build/ex-img`, free-exercise-db, Unlicense) у WebP. CSS і JS у `fit-zona/assets` пишуться руками.
 
+Генерує також `sitemap.xml`, `robots.txt`, `404.html`, картинки для соцмереж (`assets/og`) і структуровані дані (JSON-LD). Шрифт для картинок — `_build/fonts/Montserrat-VF.ttf`.
+
 Локально: `python3 -m http.server 8140 -d fit-zona`
 
 Design & Development by [Sasha Zimin](https://zimin.dev) ❤️

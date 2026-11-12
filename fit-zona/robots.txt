@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fit-zona.pp.ua/sitemap.xml
